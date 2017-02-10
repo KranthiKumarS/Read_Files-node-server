@@ -210,7 +210,7 @@ app.get('/public', function (req, res) {
  * Creating file directory structure
  * */
 var dirTree = require('directory-tree');
-var tree = dirTree('./data-folder', ['.txt', '.jpg'], function(item, PATH) {
+var tree = dirTree('./public/Data-Components', ['.html', '.css', '.js', '.less'], function(item, PATH) {
   return item;
 });
 
@@ -218,7 +218,7 @@ var tree = dirTree('./data-folder', ['.txt', '.jpg'], function(item, PATH) {
  * Reading from directory-tree and writing to json file
  */
 var fs_ex = require('fs-extra');
-fs_ex.outputJson('./test.json', tree, function (err) {
+fs_ex.outputJson('./public/com-data.json', tree, function (err) {
         //console.log(err)
 });
 

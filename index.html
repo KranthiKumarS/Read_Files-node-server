@@ -66,60 +66,23 @@
 
 <ul id="foldertree"></ul> 
 
-
+<div id='cssmenu'>
+    <ul id='options'>
+        <li class='active'><a href='#'><span>Home</span></a>
+            <ul id='home'></ul></li>
+        <li class='has-sub'><a href='#'><span>Products</span></a>
+            <ul id='product_list'></ul></li>
+        <li class='has-sub'><a href='#'><span>Company</span></a>
+            <ul id='company'></ul></li>
+        <li class='has-sub'><a href='#'><span>Contact</span></a>
+            <ul id='contact'></ul></li>
+    </ul>
+</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-    <script>
-    $(document).ready(function() {
-            var rootHtmlUrl = "helloworld.html";
-            var targetHtmlId =  "#code-html";
-            ajaxCall(rootHtmlUrl, targetHtmlId);
-
-
-            var rootCssUrl = "base.less";
-            var targetCssId =  "#code-less";
-            ajaxCall(rootCssUrl, targetCssId);
-
-
-            function ajaxCall(rootUrl, targetId){
-              $.ajax({
-                    url : rootUrl,
-                    dataType: "text",
-                    success : function (data) {
-                        $(targetId).html(HtmlEncode(data));
-                    }
-                });
-            }
-            
-            
-            function HtmlEncode(s)
-            {
-              var el = document.createElement("div");
-              el.innerText = el.textContent = s;
-              s = el.innerHTML;
-              return s;
-            }
-       $.when( $.ajax( "helloworld.html" ) ).then(function( data, textStatus, jqXHR ) {
-          //alert( jqXHR.status ); // Alerts 200
-           //console.log(HtmlEncode(data));
-           //$("#code-css").html(HtmlEncode(data));
-        });
-
-        $("body").each(function(){
-          if($(this).find("pre").text() == ""){
-            $("pre").html("File Not found !");
-          }
-      });
-
-      
-      
- 
-
-
-    }); 
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
