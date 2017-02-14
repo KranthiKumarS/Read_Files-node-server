@@ -91,6 +91,7 @@ console.log(cwData);
             details += '</ul>';
             
             $(option_cate).appendTo('#product_list').append(details);
+            $(option_cate).appendTo('#contact').append(details);
           });
 
 
@@ -99,5 +100,72 @@ console.log(cwData);
           }
       }); //$.getJSON
  
-    
+    //$(".container-fluid").split({orientation:'vertical', limit:600, position:'70%'});
+
+    /**
+     * Kendo Spliter
+     */
+        // function resizeTabs() {
+        //     var paneHeight = $("#tabstrip").closest(".k-pane").innerHeight();
+        //     var tabsHeight = $("#tabstrip > .k-tabstrip-items").outerHeight();
+        //     $("#tabstrip > div").height(paneHeight - tabsHeight - 18);
+        // }
+
+        // $("#vertical").kendoSplitter({
+        //     orientation: "vertical",
+        //     panes: [
+        //         { collapsible: true, size: "60px" },
+        //         { collapsible: false },
+        //         { collapsible: false, resizable: false, size: "10%" }
+        //     ]
+        // });
+
+        // $("#horizontal").kendoSplitter({
+        //     panes: [
+        //         { collapsible: true, size: "100px" },
+        //         { collapsible: false },
+        //         { collapsible: true, size: "20%" }
+        //     ],
+        //     resize: resizeTabs
+        // });
+
+        // $("#tabstrip").kendoTabStrip();
+
+        // resizeTabs();
+
+    /**
+     * Kendo Spliter End
+     */
+
+
+    $(".panel-left").resizable({
+    handleSelector: ".splitter",
+    resizeHeight: false
+    });
+
+    $(".panel-top").resizable({
+    handleSelector: ".splitter-horizontal",
+    resizeWidth: false
+    });
+
+
+
+    $('.dropdown').tendina({
+        // This is a setup made only
+        // to show which options you can use,
+        // it doesn't actually make sense!
+        animate: true,
+        speed: 500,
+        onHover: false,
+        hoverDelay: 300,
+        activeMenu: null,
+        openCallback: function(clickedEl) {
+          console.log('Hey dude!');
+        },
+        closeCallback: function(clickedEl) {
+          console.log('Bye dude!');
+        }
+      });
+
+
 })(this.jQuery);
