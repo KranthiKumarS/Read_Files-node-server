@@ -1,47 +1,48 @@
 (function($) {
 	
-    var rootHtmlUrl = "helloworld.html";
-            var targetHtmlId =  "#code-html";
-            ajaxCall(rootHtmlUrl, targetHtmlId);
+    // var pathTest;
+    // var rootHtmlUrl = "./Data-Components/Component-1/html/helloworld.html";
+    // var targetHtmlId =  "#code-html";
+    // ajaxCall(rootHtmlUrl, targetHtmlId);
 
 
-            var rootCssUrl = "base.less";
-            var targetCssId =  "#code-less";
-            ajaxCall(rootCssUrl, targetCssId);
+    // var rootCssUrl = "public\\Data-Components\\Component-1\\css\\bootstrap.min.css";
+    // var targetCssId =  "#code-less";
+    // ajaxCall(rootCssUrl, targetCssId);
 
 
-            function ajaxCall(rootUrl, targetId){
-              $.ajax({
-                    url : rootUrl,
-                    dataType: "text",
-                    success : function (data) {
-                        $(targetId).html(HtmlEncode(data));
-                    }
-                });
+    function ajaxCall(rootUrl, targetId){
+        $.ajax({
+            url : rootUrl,
+            dataType: "text",
+            success : function (data) {
+                $(targetId).html(HtmlEncode(data));
             }
-            
-            
-            function HtmlEncode(s)
-            {
-              var el = document.createElement("div");
-              el.innerText = el.textContent = s;
-              s = el.innerHTML;
-              return s;
-            }
-       
-       
-       
-       $.when( $.ajax( "helloworld.html" ) ).then(function( data, textStatus, jqXHR ) {
-          //alert( jqXHR.status ); // Alerts 200
-           //console.log(HtmlEncode(data));
-           //$("#code-css").html(HtmlEncode(data));
         });
+    }
+    
+    
+    function HtmlEncode(s)
+    {
+        var el = document.createElement("div");
+        el.innerText = el.textContent = s;
+        s = el.innerHTML;
+        return s;
+    }
+       
+       
+       
+    //    $.when( $.ajax( "helloworld.html" ) ).then(function( data, textStatus, jqXHR ) {
+    //       //alert( jqXHR.status ); // Alerts 200
+    //        //console.log(HtmlEncode(data));
+    //        //$("#code-css").html(HtmlEncode(data));
+    //     });
 
-        $("body").each(function(){
-          if($(this).find("pre").text() == ""){
-            $("pre").html("File Not found !");
-          }
-      });
+    $("body").each(function(){
+        if($(this).find("pre").text() == ""){
+        $("pre").html("File Not found !");
+        }
+    });
 
       // $.ajax({
       //     url : "data-folder/data.json",
@@ -60,82 +61,49 @@
       //       console.log( data.path);
       //     }
       // });
-$.ajax({
+    $.ajax({
           url : "com-data.json",
           dataType: "json",
           success : function (cwData) {
-      //$.getJSON('data-folder/data.json', function (cwData) {
-console.log(cwData);
-          // $.each(cwData.product, function (i, product) {
-          //     var option_cate = '<li class="item"><a href="#">' + product.category + '</a></li>';
-          //     // Add the product names
-          //     var details = '<ul class="details">';
-          //     $.each(product.items, function (i, item) {
-          //         details += '<li class="name"><a href="#">' + item.name + '</a></li>'; 
-          //     });
-      
-          //   details += '</ul>';
-            
-          //   $(option_cate).appendTo('#product_list').append(details);
-          // });
-
-
-          $.each(cwData.children, function (i, children) {
-              var option_cate = '<li class="item"><a href="#">' + children.name + '</a></li>';
-              // Add the children names
-              var details = '<ul class="details">';
-              $.each(children.children, function (i, item) {
-                  details += '<li class="name"><a href="#">' + item.name + '</a></li>'; 
-              });
-      
-            details += '</ul>';
-            
-            $(option_cate).appendTo('#product_list').append(details);
-            $(option_cate).appendTo('#contact').append(details);
-          });
-
-
-
-
-          }
-      }); //$.getJSON
+            //console.log(cwData);
+            $.each(cwData.children, function (i, children) {
+                var componentName = cwData.name +"/"+ cwData.children[i].name + "/" ;
+                //console.log(componentName);
+                var option_cate = '<li class="item"><a class="folder" href="#" data-path="'+ componentName +'">' + children.name + '</a></li>';
+                // Add the children names
+                var details = '<ul class="details">';
+                $.each(children.children, function (i, item) {
+                    //details += '<li class="name"><a href="#" data-path="'+ componentName + item.name +'">' + item.name + '</a></li>'; 
+                    $.each(item.children, function (i, product) {
+                        details += '<li class="name"><a class="file" href="#" data-fileType = "'+ item.name +'" data-filePath="'+ componentName + item.name + "/" + product.name +'">' + item.name + '</a></li>'; 
+                        //console.log(product.name);
+                    });  
+                });
+                details += '</ul>';
+                $(option_cate).appendTo('#product_list').append(details);
+                $(option_cate).appendTo('#contact').append(details);
+            });
+        }
+    }); 
  
-    //$(".container-fluid").split({orientation:'vertical', limit:600, position:'70%'});
+   $(document).on('click', '.folder, .file', function(){
+       var dataFilePath = $(this).attr('data-filePath');
+       //var dataFilePath = "Data-Components/Component-1/css/bootstrap.min.css"
+       console.log(dataFilePath);
+       var targetHtmlId =  "#code-"+ $(this).attr('data-fileType');
+       var targetTabId =  "#"+ $(this).attr('data-fileType');
+       //var targetHtmlId = "#code-html";
+       ajaxCall(dataFilePath, targetHtmlId);
+      
+       $('#myTabContent > .tab-pane').removeClass('active in');
+       $('.nav-tabs > li').removeClass('active');
+       $('.nav-tabs > '+ targetTabId+ 'tab').addClass('active');
+        $('#myTabContent > '+ targetTabId).addClass('active in');
+   });
 
-    /**
-     * Kendo Spliter
-     */
-        // function resizeTabs() {
-        //     var paneHeight = $("#tabstrip").closest(".k-pane").innerHeight();
-        //     var tabsHeight = $("#tabstrip > .k-tabstrip-items").outerHeight();
-        //     $("#tabstrip > div").height(paneHeight - tabsHeight - 18);
-        // }
-
-        // $("#vertical").kendoSplitter({
-        //     orientation: "vertical",
-        //     panes: [
-        //         { collapsible: true, size: "60px" },
-        //         { collapsible: false },
-        //         { collapsible: false, resizable: false, size: "10%" }
-        //     ]
-        // });
-
-        // $("#horizontal").kendoSplitter({
-        //     panes: [
-        //         { collapsible: true, size: "100px" },
-        //         { collapsible: false },
-        //         { collapsible: true, size: "20%" }
-        //     ],
-        //     resize: resizeTabs
-        // });
-
-        // $("#tabstrip").kendoTabStrip();
-
-        // resizeTabs();
-
-    /**
-     * Kendo Spliter End
-     */
+/**
+ * Spitter
+ */
 
 
     $(".panel-left").resizable({
@@ -148,7 +116,9 @@ console.log(cwData);
     resizeWidth: false
     });
 
-
+/**
+ * Animated Menu
+ */
 
     $('.dropdown').tendina({
         // This is a setup made only
@@ -160,10 +130,10 @@ console.log(cwData);
         hoverDelay: 300,
         activeMenu: null,
         openCallback: function(clickedEl) {
-          console.log('Hey dude!');
+          //console.log('Hey dude!');
         },
         closeCallback: function(clickedEl) {
-          console.log('Bye dude!');
+          //console.log('Bye dude!');
         }
       });
 
