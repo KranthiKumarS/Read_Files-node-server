@@ -217,10 +217,10 @@ var tree = dirTree('./public/Data-Components', ['.html', '.css', '.js', '.less']
 /**
  * Reading from directory-tree and writing to json file
  */
-// var fs_ex = require('fs-extra');
-// fs_ex.outputJson('./public/com-data.json', tree, function (err) {
-//         //console.log(err)
-// });
+var fs_ex = require('fs-extra');
+fs_ex.outputJson('./public/com-data.json', tree, function (err) {
+        //console.log(err)
+});
 
 
 /**

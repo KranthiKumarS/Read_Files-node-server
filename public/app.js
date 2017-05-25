@@ -11,6 +11,7 @@
     // ajaxCall(rootCssUrl, targetCssId);
 
 
+
     function ajaxCall(rootUrl, targetId){
         $.ajax({
             url : rootUrl,
@@ -71,7 +72,7 @@
                 //console.log(componentName);
                 var option_cate = '<li class="item"><a class="folder" href="#" data-path="'+ componentName +'">' + children.name + '</a></li>';
                 // Add the children names
-                var details = '<ul class="details">';
+                var details = '<ul class="details hidden">';
                 $.each(children.children, function (i, item) {
                     //details += '<li class="name"><a href="#" data-path="'+ componentName + item.name +'">' + item.name + '</a></li>'; 
                     $.each(item.children, function (i, product) {
@@ -86,13 +87,11 @@
         }
     }); 
  
-   $(document).on('click', '.folder, .file', function(){
+   $(document).on('click', '.file', function(){
        var dataFilePath = $(this).attr('data-filePath');
-       //var dataFilePath = "Data-Components/Component-1/css/bootstrap.min.css"
        console.log(dataFilePath);
        var targetHtmlId =  "#code-"+ $(this).attr('data-fileType');
        var targetTabId =  "#"+ $(this).attr('data-fileType');
-       //var targetHtmlId = "#code-html";
        ajaxCall(dataFilePath, targetHtmlId);
       
        $('#myTabContent > .tab-pane').removeClass('active in');
@@ -100,7 +99,50 @@
        $('.nav-tabs > '+ targetTabId+ 'tab').addClass('active');
         $('#myTabContent > '+ targetTabId).addClass('active in');
    });
-
+    $(document).on('click', '.folder', function(){
+       //var dataFilePath = $(this).attr('data-filePath');
+       //var dataFilePath = "Data-Components/Component-1/css/bootstrap.min.css"
+       //var dataFiletype = $();
+    //    var dataFilePathArr = [];
+       var parentEle = $(this).next('ul');
+       $(parentEle).each(function(i){
+            var targetTabId =  "#"+ $(':nth-child(2)', $(this)).children().attr('data-filetype');
+            $($(this).children()).each(function(i){
+            var dataFilePath = $(this).children().attr('data-filePath');
+            var targetHtmlId =  "#code-"+ $(this).children().attr('data-filetype');
+            ajaxCall(dataFilePath, targetHtmlId);
+            $('#myTabContent > .tab-pane').removeClass('active in');
+            $('.nav-tabs > li').removeClass('active');
+            $('.nav-tabs > '+ targetTabId+ 'tab').addClass('active');
+            $('#myTabContent > '+ targetTabId).addClass('active in');
+           });
+        });
+    //    console.log('dataFilePathArr :' + dataFilePathArr);
+        // var dataFilePathHtml = $(this).next('ul').children().children().filterByData('filetype', 'html').attr('data-filePath');
+        // var dataFilePathCss = $(this).next('ul').children().children().filterByData('filetype', 'css').attr('data-filePath');
+        // var dataFilePathJs = $(this).next('ul').children().children().filterByData('filetype', 'js').attr('data-filePath');
+        // var dataFilePathLess = $(this).next('ul').children().children().filterByData('filetype', 'less').attr('data-filePath');
+       //console.log(dataFilePath);
+        // console.log('dataFilePathHtml :' + dataFilePathHtml);
+        //  console.log('dataFilePathCss :' + dataFilePathCss);
+        //   console.log('dataFilePathJs :' + dataFilePathJs);
+        //    console.log('dataFilePathLess :' + dataFilePathLess);
+        
+    //    var targetHtmlId =  "#code-"+ $(this).next('ul').children().children().attr('data-fileType');
+    //    var targetTabId =  "#"+ $(this).next('ul').children().children().attr('data-fileType');
+       //var targetHtmlId = "#code-html";
+    //    ajaxCall(dataFilePathHtml, targetHtmlId);
+    //   console.log(targetTabId);
+    //    $('#myTabContent > .tab-pane').removeClass('active in');
+    //    $('.nav-tabs > li').removeClass('active');
+    //    $('.nav-tabs > '+ targetTabId+ 'tab').addClass('active');
+    //     $('#myTabContent > '+ targetTabId).addClass('active in');
+   });
+$.fn.filterByData = function(prop, val) {
+    return this.filter(
+        function() { return $(this).data(prop)==val; }
+    );
+}
 /**
  * Spitter
  */
@@ -137,5 +179,12 @@
         }
       });
 
-
+function restoreConsole() {
+    var i = document.createElement('iframe');
+    i.style.display = 'none';
+    document.body.appendChild(i);
+    window.console = i.contentWindow.console;
+    i.parentNode.removeChild(i);
+}
+restoreConsole();
 })(this.jQuery);
